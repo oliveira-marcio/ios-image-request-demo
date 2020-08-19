@@ -32,7 +32,7 @@ class ViewController: UIViewController {
             print("Error creating image URL.")
             return
         }
-        
+        /*
         let task = URLSession.shared.dataTask(with: imageUrl) {
             (data, response, error) in
             guard let data = data else {
@@ -43,6 +43,22 @@ class ViewController: UIViewController {
             let downloadedImage = UIImage(data: data)
             DispatchQueue.main.async {
                 self.networkImageView.image = downloadedImage
+            }
+        }
+        */
+        let task = URLSession.shared.downloadTask(with: imageUrl) {
+            (location, response, error) in
+            guard let location = location else {
+                print("Location is nil")
+                return
+            }
+            
+            print(location)
+            
+            let imageData = try! Data(contentsOf: imageUrl)
+            let image = UIImage(data: imageData)
+            DispatchQueue.main.async {
+                self.networkImageView.image = image 
             }
         }
         
